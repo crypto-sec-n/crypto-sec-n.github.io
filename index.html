@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <script src="../assets/js/color-modes.js"></script>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Hayato Kimura, Ryoma Ito, Kazuhiko Minematsu, Shogo Shiraki and Takanori Isobe">
+    <meta name="generator" content="Hugo 0.112.5">
+    <title>Not in The Prophecies: Practical Attacks on Nostr</title>
+
+    
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+    </style>
+
+    
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="check2" viewBox="0 0 16 16">
+        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+      </symbol>
+      <symbol id="circle-half" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+      </symbol>
+      <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+      </symbol>
+      <symbol id="sun-fill" viewBox="0 0 16 16">
+        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+      </symbol>
+    </svg>
+
+  
+  
+  <!--
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Tenth navbar example">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Paper</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">PoC (GitHub)</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Team</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+-->
+</header>
+
+<main>
+
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <div class="d-flex flex-column align-items-center">
+          <img src="/assets/img/icon.jpg" alt="Logo" width="100" height="100" class="rounded-circle">
+          <h1 class="fw-light">Not in The Prophecies: </h1>
+          <h2 class="fw-light">Practical Attacks on Nostr</h2>
+        </div>
+        <p class="lead text-body-secondary">
+          Security Analysis on Nostr
+        </p>
+        <p class="d-flex gap-3 justify-content-center">
+          <a href="#paper" class="btn btn-primary my-2"><i class="bi bi-file-earmark-text fs-4"></i> Paper</a>
+          <a href="#poc" class="btn btn-secondary my-2"><i class="bi bi-tools fs-4"></i> PoC on GitHub</a> 
+          <a href="#faq" class="btn btn-secondary my-2"><i class="bi bi-question-circle fs-4"></i> FAQ</a>
+          <a href="#team" class="btn btn-secondary my-2"><i class="bi bi-people fs-4"></i> Team</a>
+        </p>
+      </div>
+    </div>
+  </section>
+  
+
+  <div class="album py-5 bg-body-tertiary">
+    <div class="container">
+      <div class="row row-cols-1 g-3">
+        <div class="col">
+          <div class="p-4 border rounded bg-white shadow-sm w-100">
+            <h3 class="fw-bold">Overview</h3>
+            <hr class="my-3 text-secondary">
+            <p>What is Nostr?</p>
+            Nostr is an open-source, decentralized social-networking protocol where clients publish signed
+            events to one or more relay servers. Conceived by <strong>@fiatjaf</strong> in 2019,
+            it exceeded <strong>1.1 million registered users and 38 K weekly active users (Oct 2024)</strong>.
+            High-profile supporters—such as Jack Dorsey’s funding and Edward Snowden’s adoption—boosted
+            visibility, while popular clients like <em>Damus</em> (iOS) and <em>Amethyst</em> (Android) have
+           &nbsp;≥100 K downloads each.  Specifications, called <em>Nostr Implementation Possibilities (NIPs)</em>,
+            outline features including signature verification and encrypted direct messages (DMs, NIP-04);
+            nonetheless, sizeable gaps between the texts and real-world implementations create security risk.
+          </div>
+        </div>
+        <div class="col">
+          <div class="p-4 border rounded bg-white shadow-sm w-100">
+            <h3 class="fw-bold">Results — Our Security Findings</h3>
+            <hr class="my-3 text-secondary">
+            This paper presents the first in-depth security analysis of the Nostr protocol and its
+    popular client implementations. Our research methodology combined specification-level analysis of the Nostr NIP documents,
+    manual code analysis of leading client implementations, dynamic testing of encrypted DM and
+    profile handling flows, and development of proof-of-concept exploits to validate each
+    discovered vulnerability.
+    <br/><br/>Findings:<br/>
+            <ol>
+              <li><strong>Key-replacement impersonation</strong> caused by missing public-key authenticity checks.</li>
+              <li><strong>Event forgery attacks</strong> where several clients omit signature verification.</li>
+              <li><strong>Full DM forgery</strong> that combines <em>AES-CBC without a MAC</em> and poor key separation.</li>
+              <li><strong>Plain-text recovery of encrypted DMs</strong> by chaining CBC malleability with link previews.</li>
+              <li><strong>Inadequate cache search (Client cache poisoning)</strong> that hijacks Bitcoin tips or alters profile data.</li>
+            </ol>
+            <p>All attacks are reproducible with our publicly available proof-of-concept code.</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="p-4 border rounded bg-white shadow-sm w-100">
+            <h3 id="disclosure" class="fw-bold">Disclosure</h3>
+            <hr class="my-3 text-secondary">
+            <table>
+              <thead>
+                <tr><th>Date: yyyy-mm-dd&nbsp;(2023–2025)</th><th>Action</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>2023-06-30</td><td>Reported DM-forgery PoC &amp; patch to <em>Damus v1.5(8)</em></td></tr>
+                <tr><td>2023-07-01</td><td>Reported cache-poisoning bug to Damus</td></tr>
+                <tr><td>2023-07-15</td><td>Submitted additional attacks (Appendix&nbsp;E.4)</td></tr>
+                <tr><td>2023-11   </td><td>Damus released <em>v1.6(29)</em> removing vulnerable cache code</td></tr>
+                <tr><td>2023-12   </td><td>Found vulnerability on Plebstr, FreeFrom, Damus v1.6, Iris(iOS)</td>
+                <tr><td>2023-12   </td><td>Iris moves to another implementation (Snort) and the issues have been fixed (Independent works) </td>
+                <tr><td>2024-01-23 – 02-02</td><td>Coordinated disclosure to Plebstr, FreeFrom, Damus v1.6, Iris(iOS)</td></tr>
+                <tr><td>2024-02   </td><td>Patched FreeFrom (v1.3.6) has been released in February 2024</td></tr>
+                <tr><td>2024-07   </td><td>Plebstr has been rebranded as Openvibe and removing vulnerable DM feature</td></tr>
+                <tr><td>2024-08   </td><td>Reported Plaintext Recovery on DM Exploiting Link Preview</td></tr>
+                <tr><td>2025-05-07   </td><td>Published this website</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="paper" class="col">
+          <div class="p-4 border rounded bg-white shadow-sm w-100">
+            <h3 class="fw-bold">Paper & Talk</h3>
+            <hr class="my-3 text-secondary">
+            <h4>Paper</h4>
+            <p>
+              <strong>Hayato Kimura, Ryoma Ito, Kazuhiko Minematsu, Shogo Shiraki, Takanori Isobe.</strong><br>
+              “<em>Not in The Prophecies: Practical Attacks on Nostr</em>.”<br>
+              <cite>10th IEEE European Symposium on Security and Privacy (EuroS&amp;P 2025).</cite><a href="https://eurosp2025.ieee-security.org/accepted_and_awards.html" target=”_blank” rel="noopener">Link</a>
+            </p>
+            ---<br/>
+            Note: Our paper will be available on IEEE Xplore in the near future.<br/>
+
+            <h4>BibTeX Citation</h4>
+            <style>
+              .select-all{
+                user-select: all;
+                -webkit-user-select: all;
+                cursor:pointer;
+              }
+            </style>
+            <pre><code class="language-bibtex select-all">
+          @inproceedings{kimura2025nostr,
+            author    = {Hayato Kimura and Ryoma Ito and Kazuhiko Minematsu and
+                         Shogo Shiraki and Takanori Isobe},
+            title     = {Not in The Prophecies: Practical Attacks on Nostr},
+            booktitle = {Proceedings of the 2025 IEEE European Symposium on
+                         Security and Privacy (EuroS\&P)},
+            year      = {2025},
+            publisher = {IEEE},
+            note      = {To appear}
+          }
+            </code></pre>
+
+          <h4>Talk (non-archival)</h4>
+          <p>
+            <strong>Hayato Kimura, Ryoma Ito, Kazuhiko Minematsu, Shogo Shiraki, Takanori Isobe.</strong><br>
+            “<em>Not Sealed: Practical Attacks on Nostr, a Decentralized Censorship-Resistant Protocol</em>.”<br>
+            <cite>Black Hat USA 2025.</cite><a href="https://www.blackhat.com/us-25/briefings/schedule/index.html#not-sealed-practical-attacks-on-nostr-a-decentralized-censorship-resistant-protocol-45726" target=”_blank” rel="noopener">Link</a>
+          </p>
+
+          </div>
+        </div>
+        <div id="poc" class="col">
+          <div class="p-4 border rounded bg-white shadow-sm w-100">
+            <h3 class="fw-bold">Proof of Concept</h3>
+            <hr class="my-3 text-secondary">
+            <p>
+              The Proof-of-concept code and accompanying instructions for <a href="https://eurosp2025.ieee-security.org/cfp.html" target=”_blank” rel="noopener" >Open Science</a> are available on GitHub.
+              <a href="https://github.com/crypto-sec-n" target="_blank" rel="noopener">https://github.com/crypto-sec-n</a>
+            </p>
+          </div>
+        </div>
+        <div id="faq" class="col">
+          <div class="p-4 border rounded bg-white shadow-sm w-100">
+            <h3 class="fw-bold">FAQ</h3>
+            <hr class="my-3 text-secondary">
+
+            <h3>Q1  Which clients are affected? </h3>
+            <p>
+              Past version of <em>Damus</em> (iOS), <em>Iris</em> (iOS), <em>FreeFrom</em> (iOS/Android), and
+              <em>Plebstr</em>. See the details on <a href="#disclosure">Disclosure</a>.
+
+            </p>
+          
+            <h3>Q2  I’m a user—what can I do right now?</h3>
+            <ul>
+              <li><strong>Update to the latest version of your client.</strong></li>
+              <li>Disable <strong>incoming link previews</strong> in your client.</li>
+              <li>Switch to a client that <strong>verifies every event signature</strong>.<br>
+                The starting point of our main attacks was flawed client-side signature verification.  
+                We observed that the combination of signature verification flaws with other cryptographic  
+                and application implementation issues enabled Plaintext Recovery, DM forgery, profile forgery,  
+                and Bitcoin hijacking; using a client with correct signature checks mitigates these risks.
+              </li>
+              <li>Avoid adding untrusted relays to your relay list.</li>
+            </ul>
+          
+            <h3>Q3  I’m a client developer—what are the recommended fixes?</h3>
+            <ol>
+              <li><strong>Mandatory client-side signature verification for all event.</strong></li>
+              <li>Deploy <strong>out-of-band public-key authentication</strong> or a <strong>Key-Transparency</strong> service.</li>
+              <li>
+                <strong>Migrate encrypted DMs from NIP-04 to NIP-44</strong> (versioned AEAD payloads; reference
+                <em>XChaCha20-Poly1305 v2</em>) and adopt <strong>NIP-17 + NIP-59</strong> for private DMs to
+                achieve authenticity, integrity, and recipient-metadata confidentiality.
+              </li>
+              <li><strong>Re-calculate the <code>id</code> field before consulting any cache</strong>; never trust an <code>id</code> supplied by the relay.</li>
+              <li>
+                <strong>Generate link previews on the sender side.</strong><br>
+                Receiver-side previews combine an <em>integrity-flawed cipher</em> with external HTTP fetches,
+                enabling plaintext-recovery attacks. Previous studies also show that receiver-side previews leak
+                the recipient’s IP address and message-open timing. Eliminating receiver-side fetching removes
+                both confidentiality and privacy risks.
+              </li>
+            </ol>
+          
+            <h3>Q4  I’m a client developer—If the relay already checks signatures, can clients skip verification to save battery?</h3>
+            <p>No. Relays are untrusted by design:</p>
+            <ul>
+              <li>A malicious relay can feed forged events that pass unchecked on the client.</li>
+              <li>The NIP specification does <strong>not</strong> guarantee that every relay performs verification.</li>
+              <li>Existing apps (Amethyst, Iris Web) demonstrate that full verification incurs negligible delay; aggregated-signature schemes (e.g., BLS) can reduce cost even further.</li>
+              <li>
+                When caching events, first verify them successfully <em>and</em>
+                <strong>re-compute the <code>id</code> from the event payload each time you load it</strong>;
+                do not rely solely on a relay-supplied or previously cached <code>id</code>.
+                Vulnerable clients followed the “cache-after-verify” rule but still failed integrity
+                checks because they cached only the <code>id</code> and skipped this re-computation step.
+              </li>
+            </ul>
+            <p><strong>Bottom line: Don’t trust — verify <em>on the client</em>.</strong></p>
+
+            <!-- Integrated Q7 for your FAQ section -->
+            <h3>Q5 I’m a NIPs contributor—how should I improve the specification?</h3>
+            <ul>
+            <li>
+            <strong>Enforce signature verification in NIP-01</strong><br>
+            Specify that client <em>must</em> verify every event’s signature and drop invalid events,  and emphasize that do not trust the relay servers.
+            </li>
+            <li>
+            <strong>Normative guidance for link previews</strong><br>
+            Add a section requiring sender-side preview generation (e.g. summarization, OGP fetch) 
+            and prohibit receiver-side HTTP/HTTPS fetches for previews.
+            </li>
+            <li>
+            <strong>`id` recalculation before caching</strong><br>
+            Specify that any cache lookup must re-compute the event <code>id</code> from the payload 
+            rather than trusting a relay-supplied or previously cached value.
+            </li>
+            <li>
+            <strong>Public-key authenticity</strong><br>
+            Introduce normative text for out-of-band key authentication or a Key Transparency service 
+            to ensure clients can trust public keys.
+            </li>
+            <li>
+            <strong>Explicit security goals and adversary model</strong><br>
+            Define formal security goals—confidentiality, integrity, authenticity—and specify the 
+            adversary assumptions unique to distributed SNS.
+            </li>
+            <li>
+            <strong>Mandatory NIP baseline and implementation guidelines</strong><br>
+            Clarify which NIPs form the minimum secure baseline and provide 
+            normative guidelines (e.g., signature verification timing, cache behavior) 
+            to close specification–implementation gaps.
+            </li>
+            <li>
+            <strong>Sub-protocol interaction and key separation</strong><br>
+            Ensure that related sub-protocols (e.g., NIP-04 vs. NIP-46) are not duplicated without 
+            clear key separation, and document how their interactions must be handled safely.
+            </li>
+            </ul>
+          <p>Our attacks arose from a combination of specification flaws and implementation bugs, most of which
+            could be addressed by fixing implementations alone. However, we believe improving the specification
+            is also necessary, because our findings paradoxically suggest that stronger security guarantees
+            in the spec can help prevent these implementation mistakes.</p>
+          </div>
+        </div>
+        <div id="team" class="col">
+          <div class="p-4 border rounded bg-white shadow-sm w-100">
+            <h3 class="fw-bold">Team</h3>
+            <hr class="my-3 text-secondary">
+            <p><a href="https://torima-hayaku.com/"  target=”_blank” rel="noopener">Hayato KIMURA</a> (NICT / The University of Osaka)</p>
+            <p><a href="https://sites.google.com/view/itorym/en" target=”_blank” rel="noopener">Ryoma ITO</a> (NICT)</p>
+            <p><a href="https://www.nec.com/en/global/rd/people/kazuhiko_minematsu.html" target=”_blank” rel="noopener">Kazuhiko MINEMATSU</a> (NEC)</p>
+            <p>Shogo SHIRAKI (University of Hyogo)</p>
+            <p><a href="https://sites.google.com/view/takanoriisobe/home"  target=”_blank” rel="noopener">Takanori ISOBE</a> (The University of Osaka)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+
+</main>
+
+<footer class="text-body-secondary py-5">
+  <div class="container">
+    <p class="float-end mb-1">
+      <a href="#">Back to top</a>
+    </p>
+    <p style="text-align:center; font-size:0.9em; color:#666;">
+      This website is managed by <a href="https://www.crypt-sec.ist.osaka-u.ac.jp/" target=”_blank” rel="noopener">Cryptography Engineering Laboratory, The University of Osaka</a><br>
+      <p>This page was first published on 7 May 2025	<br>
+      Last updated: 7 May 2025	</p>
+    </p>
+  </div>
+</footer>
+<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+</html>
